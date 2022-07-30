@@ -9,8 +9,8 @@ function sum(n){
 
 
 }
-console.log(sum(3));
-console.log(sum(5));
-console.log(sum(10));
+console.log(sum(3));//6
+console.log(sum(5));//15
+console.log(sum(10));//55
 
 
