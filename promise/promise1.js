@@ -10,44 +10,46 @@
 // - 最終失敗: 呼叫 reject -> reject(失敗原因)
 
 function doWork(job, timer) {
-    return new Promise((resolve, reject) => {
-      // 非同步運算
-      setTimeout(() => {
-        let dt = new Date();
-        // 如果失敗
-        // reject(失敗原因)
-        // reject({ error: '故意失敗' });
-        // 如果成功
-        // resolve(結果)
-        resolve(`完成工作 ${job} at ${dt.toISOString()}`);
-      }, timer);
-    });
-  }
-  
-  let dt = new Date();
-  console.log(`開始工作 at ${dt.toISOString()}`);
-  // 刷牙(3) => 吃早餐(5) => 寫功課(3)
-  let brushPromise = doWork('刷牙', 3000);
-  // console.log(brushPromise); // pending -> 表示還不知道結果
-  brushPromise
-    .then((data) => {
-      // 用來接住 resolve 後的東西
-      console.log('在 promise 裡', data);
-      // console.log(brushPromise);
-  
-      let eatPromise = doWork('吃早餐', 5000);
-      return eatPromise;
-    })
-    .then((data) => {
-      // promise chain
-      console.log('在 promise 裡', data);
-      let writePromise = doWork('寫功課', 3000);
-      return writePromise;
-    })
-    .then((data) => {
-      console.log('在 promise 裡', data);
-    })
-    .catch((err) => {
-      // 用來接住 reject
-      console.error('在 promise 發生錯誤:', err);
-    });
+  return new Promise((resolve, reject) => {
+    // 非同步運算
+    setTimeout(() => {
+      let  dt = new Date();
+      // 如果失敗
+      // reject(失敗原因)
+      // reject({ error: '故意失敗' });
+      // 如果成功
+      // resolve(結果)
+      resolve(`完成工作 ${job} at ${dt.toISOString()}`);
+    }, timer);
+  });
+}
+
+let dt = new Date();
+console.log(`開始工作 at ${dt.toISOString()}`);
+// 刷牙(3) => 吃早餐(5) => 寫功課(3)
+let brushPromise = doWork("刷牙", 3000);
+// console.log(brushPromise); // pending -> 表示還不知道結果
+brushPromise
+  .then((data) => {
+    // 用來接住 resolve 後的東西
+    console.log("在 promise 裡", data);
+    // console.log(brushPromise);
+
+    let eatPromise = doWork("吃早餐", 5000);
+    return eatPromise;
+  })
+  .then((data) => {
+    // promise chain
+    console.log("在 promise 裡", data);
+    let writePromise = doWork("寫功課", 3000);
+    return writePromise;
+  })
+  .then((data) => {
+    console.log("在 promise 裡", data);
+  })
+  .catch((err) => {
+    // 用來接住 reject
+    console.error("在 promise 發生錯誤:", err);
+  });
+
+
