@@ -14,14 +14,11 @@ function readFile() {
 }
 
 async function readFile2() {
-try {
-  let reading = await readFile();
-  console.log(reading);
-} catch (err) {
-  console.error(err);
-}
+  try {
+    let reading = await readFile();
+    console.log(reading);
+  } catch (err) {
+    console.error(err);
+  }
 }
 readFile2();
-
-
-
