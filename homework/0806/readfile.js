@@ -7,12 +7,12 @@ const fs = require('fs');
 function readFile() {
   return new Promise((resolve, reject) => {
     fs.readFile('test.txt', 'utf8', (err, data) => {
-      if (err){
-        reject(err)
-      }{
-        resolve(data)
+      if (err) {
+        reject(err);
       }
-      
+      {
+        resolve(data);
+      }
     });
   });
 }
@@ -21,7 +21,7 @@ let reading = readFile();
 reading
   .then((data) => {
     console.log(data);
-    return readFile('test.txt', 'utf8')
+    return readFile('test.txt', 'utf8');
   })
   .catch((err) => {
     // 用來接住 reject
