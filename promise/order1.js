@@ -3,6 +3,7 @@ async function test() {
   // 有沒有 await 會有很大的差別
   new Promise((resolve, reject) => {
     setTimeout(() => {
+      reject({ error: '故意失敗' });
       console.log(2);
       resolve();
     }, 0);

@@ -7,12 +7,12 @@ const fs = require('fs');
 function readFile() {
   return new Promise((resolve, reject) => {
     fs.readFile('test.txt', 'utf8', (err, data) => {
-      if (err){
-        reject(err)
-      }{
-        resolve(data)
+      if (err) {
+        reject(err);
       }
-      
+      {
+        resolve(data);
+      }
     });
   });
 }
