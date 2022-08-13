@@ -25,13 +25,11 @@ function readFile() {
 
 //立即呼叫函式表達式（
 //英文：immediately-invoked function expression，縮寫：IIFE）
-(async()=>  {
+(async () => {
   try {
     let reading = await readFile();
     console.log(reading);
   } catch (err) {
     console.error(err);
   }
-})()
-
-
+})();
