@@ -13,12 +13,25 @@ function readFile() {
   });
 }
 
-async function readFile2() {
+// async function readFile2() {
+//   try {
+//     let reading = await readFile();
+//     console.log(reading);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+// readFile2();
+
+//立即呼叫函式表達式（
+//英文：immediately-invoked function expression，縮寫：IIFE）
+(async()=>  {
   try {
     let reading = await readFile();
     console.log(reading);
   } catch (err) {
     console.error(err);
   }
-}
-readFile2();
+})()
+
+
