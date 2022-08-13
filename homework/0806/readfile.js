@@ -26,7 +26,7 @@ reading
   })
   .catch((err) => {
     // 用來接住 reject
-    console.error('在 promise 發生錯誤:', err);  //也可寫成.catch(console.error)
+    console.error('在 promise 發生錯誤:', err); //也可寫成.catch(console.error)
   });
 
 //fs.readFile('test.txt', 'utf8', (err, data) => {
