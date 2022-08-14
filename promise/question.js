@@ -1,11 +1,8 @@
 let car1 = {
-  owner: 'Lily',
+  color: 'red',
+  owner: 'Coco',
 };
 
 let car2 = car1;
-
-car2 = {
-  owner: 'jack',
-};
-
-console.log(car2.owner);
+car2.owner = 'Jack';
+console.log(car1.owner);
