@@ -22,7 +22,7 @@ const mysql = require('mysql2');
       host: 'localhost',
       port: 3306,
       user: 'admin',
-      password: '12345',
+      password: '',
       database: 'stock_mfee27',
     });
 
@@ -48,7 +48,7 @@ const mysql = require('mysql2');
     // INSERT INTO stocks (id, name) VALUES ('2330', '台積電')
     // 自己串 sql 字串: 容易出錯、有資訊安全上的風險 sql injection
     // connection.query
-    let saveNameResult = connection.execute(`INSERT  INTO stocks (id, name) VALUES (?, ?)`, [stockNo, stockName]);
+    let saveNameResult = connection.execute(`INSERT IGNORE  INTO stocks (id, name) VALUES (?, ?)`, [stockNo, stockName]);
     console.log(saveNameResult);
     // let queryDate = moment().format('YYYYMMDD'); //'20220814';
     // let response = await axios.get(`https://www.twse.com.tw/exchangeReport/STOCK_DAY`, {
