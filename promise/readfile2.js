@@ -1,11 +1,20 @@
-const fs = require('fs');
+// 內建版本
+const fs = require('fs/promises');
 
-// 記得要放編碼 utf8
-// callback
-// readFile 去硬碟讀檔案，這是很慢的事，他是非同步
-fs.readFile('test.txt', 'utf8', (err, data) => {
-  if (err) {
-    return console.error('發生錯誤', err);
+// 這個寫法也是可以的
+// const fs = require('fs').promises;
+
+fs.readFile('test.txt', 'utf-8')
+  .then((data) => {
+    console.log('promise', data);
+  })
+  .catch(console.error);
+
+(async () => {
+  try {
+    let data = await fs.readFile('test.txt', 'utf-8');
+    console.log('await', data);
+  } catch (e) {
+    console.error(e);
   }
-  console.log(data);
-});
+})();
