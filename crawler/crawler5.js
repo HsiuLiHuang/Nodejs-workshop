@@ -50,15 +50,15 @@ const mysql = require('mysql2');
     // connection.query
     let saveNameResult = connection.execute(`INSERT IGNORE  INTO stocks (id, name) VALUES (?, ?)`, [stockNo, stockName]);
     console.log(saveNameResult);
-    // let queryDate = moment().format('YYYYMMDD'); //'20220814';
-    // let response = await axios.get(`https://www.twse.com.tw/exchangeReport/STOCK_DAY`, {
-    //   params: {
-    //     response: 'json',
-    //     date: queryDate,
-    //     stockNo: stockNo,
-    //   },
-    // });
-    // console.log(response.data);
+    let queryDate = moment().format('YYYYMMDD'); //'20220814';
+    let response = await axios.get(`https://www.twse.com.tw/exchangeReport/STOCK_DAY`, {
+      params: {
+        response: 'json',
+        date: queryDate,
+        stockNo: stockNo,
+      },
+    });
+    console.log(response.data);
   } catch (e) {
     console.error(e);
   } finally {
