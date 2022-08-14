@@ -2,4 +2,6 @@ node_modules
 practice
 temp/*
 
+.env
+
 git add .
