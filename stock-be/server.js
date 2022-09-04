@@ -1,35 +1,54 @@
 const express = require('express');
-
-require('dotenv').config();
-//是讀取這一個
-
+// 利用 express 這個框架/函式庫 來建立一個 web application
 const app = express();
+// 初始化 dotenv
+require('dotenv').config();
 
-// ||=或的意思 undefined是flase , 設定3002為預設值
-//在env檔設定aaa=0 ，雖然0是false，
-//傳進來是"0"，字串0是true，盡量避免將0用這方式設定
+const path = require('path');
+
+// 在程式碼中，不要讓某些常數散亂在專案的各處
+// 至少在同一個檔案中，可以放到最上方統一管理
+// 目標是: 只需要改一個地方，全部的地方就生效
+// 降低漏改到的風險 -> 降低程式出錯的風險
 const port = process.env.SERVER_PORT || 3002;
+
+// 啟用 session
+const expressSession = require('express-session');
+// 把 session 存在硬碟中
+var FileStore = require('session-file-store')(expressSession);
+app.use(
+  expressSession({
+    store: new FileStore({
+      // session 儲存的路徑
+      path: path.join(__dirname, '..', 'sessions'),
+    }),
+    secret: process.env.SESSION_SECRET,
+    // 如果 session 沒有改變的話，要不要重新儲存一次？
+    resave: false,
+    // 還沒初始化的，要不要存
+    saveUninitialized: false,
+  })
+);
 
 // npm i cors
 const cors = require('cors');
-//瀏覽器不允許跨源AJAX請求，只有後端網站可允許
-//cors為第三方中間件來允許跨源存取
-
+// 使用這個第三方提供的 cors 中間件
+// 來允許跨源存取
+// 預設都是全部開放
 app.use(cors());
 // 使用情境: 當前後端網址不同時，只想允許自己的前端來跨源存取
 //          就可以利用 origin 這個設定來限制，不然預設是 * (全部)
-//只有這個前端可以對我後端做跨源 設定 *就是預設給所有人
 // const corsOptions = {
 //   origin: ['http://localhost:3000'],
 // };
 // app.use(cors(corsOptions));
 
+// 引用 server 需要的資料庫模組
 const pool = require('./utils/db');
 
-//要讓express認得json
-//express內建的中間件
-//放在authRouter下面的話會讀不到
-//全站有效
+// 如果要讓 express 認得 json
+// Content-Type: application/json
+// 就要加上這個中間件
 app.use(express.json());
 
 // 設定視圖引擎，我們用的是 pug
@@ -38,6 +57,14 @@ app.set('view engine', 'pug');
 // 告訴 express 視圖在哪裡
 app.set('views', 'views');
 
+// 設置靜態檔案
+// express.static => 讓靜態檔案可以有網址
+// http://localhost:3002/uploads/檔案名稱
+app.use(express.static(path.join(__dirname, 'public')));
+// 或是給 prefix
+// http://localhost:3002/public/uploads/檔案名稱
+// app.use('/public', express.static(path.join(__dirname, 'public')));
+
 // 測試 server side render 的寫法
 app.get('/ssr', (req, res, next) => {
   // views/index.pug
@@ -45,6 +72,15 @@ app.get('/ssr', (req, res, next) => {
     stocks: ['台積電', '長榮航', '聯發科'],
   });
 });
+
+// express 是由 middleware 組成的
+// request -> middleware 1 -> middleware 2 -> ... -> reponse
+// 中間件的順序很重要!!
+// Express 會按照你程式碼的順序(由上到下)去決定 next 是誰
+// 中間件裡一定要有 next 或者 response
+// - next() 往下一關走
+// - res.xxx 結束這次的旅程 (req-res cycle)
+// pipeline pattern
 
 // 一般的 middleware
 app.use((req, res, next) => {
@@ -77,13 +113,16 @@ app.get('/test', (req, res, next) => {
 
 let stockRouter = require('./routers/stocks');
 app.use('/api/1.0/stocks', stockRouter);
+// /api/1.0/stocks
+// /api/1.0/stocks/:stockId
+
+let authRouter = require('./routers/auth');
+app.use(authRouter);
+
 // app.get('/test', (req, res, next) => {
 //   console.log('這裡是 test 2');
 //   res.send('Hello Test 2');
 // });
-
-let authRouter = require('./routers/auth');
-app.use(authRouter);
 
 // 在所有的路由中間件的下面
 // 既然前面所有的「網址」都比不到，表示前面沒有任何符合的網址 (旅程一直沒有被結束)
